@@ -1,15 +1,16 @@
 import ecs100.*;
+import java.util.HashMap;
 /**
  * A GUI with buttons to traverse a list of user contacts
  *
- * @author (Evie M)
- * @version (23/05/2022)
+ * @author Evie
+ * @version 31/05/2022
  */
 public class GUI
 {
-    // instance variables
-    private Cards cards; // Declare Cards instance (class)
-    private Card card; // Declare Card instace (class)
+    // Instance variables
+    private Card card; // Declare Card instance
+    private Cards cards; // Declare Cards instance
     
     // Declaring the boundries of the image
     private double left;
@@ -20,34 +21,35 @@ public class GUI
     private double startX;
     private double startY;
     
-    //Declaring the Cards variables
+    //Declare components of Card
     private String name;
     private int amount;
     private String imgFileName;
-    
+
     /**
      * Constructor for objects of class GUI
      */
-    public GUI() {
+    public GUI()
+    {
         // Initialise instance variables
-        cards = new Cards();// Instantiate Methods object
-        card = new Card(1, "Evie", 100,"unknown.jpeg"); // Instantiate Card object
+        cards = new Cards();
+        card = new Card(1, "Bulbasor", 123, "unknown.jpg");
         
         // Buttons for code
         UI.initialise();
-        UI.addButton("Show all Cards", cards::printAll);
+        UI.addButton("Show all cards", cards::printAll);
         UI.addButton("Add a Card", this::addCard);
         UI.addButton("Find a Card", this::findCard);
-        UI.addButton("Clear Screen", this::clearField);
+        UI.addButton("Clear Field", this::clearField);
         UI.addButton("Quit", UI::quit);
         
         // Set up mouse listner
         UI.setMouseListener(this::doMouse);
     }
-    
+
     /**
-     * Clear all the text and the image from the page
-     * Puts both things together into one method to make it easier to call
+     * Clear all the text and the graphics from the page
+     * Puts both clear method into one to make it easier to call
      */
     public void clearField() {
         UI.clearText();
@@ -55,69 +57,68 @@ public class GUI
     }
     
     /**
-     * User add a Card to collection
+     * Add a Card to the users deck
      */
     public void addCard() {
-        //Adds one on to every new Cards Id/Key
+        // Adds one on to every new Cards ID/key
         final int maxQuantity = 1;
         final int increment = 1;
         addNCard();
     }
     
-    public void addNCard(){
+    /**
+     * Recive the name from the user then do checks
+     * If everything is okay move to the method to recive value
+     */
+    public void addNCard() {
         do{
             clearField();
-            name = UI.askString("Name of new Card: ");
+            name = UI.askString("Name of the Pokemon: ");
             if (!name.matches("[a-zA-Z_]+")) {
                 UI.sleep(500.0);
-                UI.println("Invalid input");
-                UI.println("Please only enter Letters");
-                UI.println("");//Makes a white line inbetween lines
-                UI.sleep(2000.0);
+                UI.println("Invalid Input");
+                UI.println("Please only enter letters");
+                UI.sleep(2000.0);;
             }
             else
             {
                 break;
             }
-        } while (true);
+        }while (true);
         addACard();
     }
     
-    private void addACard(){
+    private void addACard() {
         final int maxAQuantity = 900000;
         final int minAQuantity = 1;
         String str;
         do{
             clearField();
-            str = UI.askString("Monetary Value of new Card: $");
+            str = UI.askString("Monetary Value of the Card: $");
             if (!str.matches("[0-9]+")) {
                 UI.sleep(500.0);
                 UI.println("Invalid input");
                 UI.println("Please only enter numbers");
-                UI.println("");//Makes a white line inbetween lines
                 UI.sleep(2000.0);
             }
             else
             {
-                amount = Integer.parseInt(str);//Convert to int to continue testing
-                if
-                (amount > maxAQuantity)
-                {
+                amount = Integer.parseInt(str); // Convert str to int called amount
+                if (amount > maxAQuantity){
                     clearField();
-                    UI.println("That is impossible, the most expensive card sold for $900,000");
-                    UI.println("Maybe you entered wrong? Try again");
+                    UI.println("That is impossible as the most expensive Card sold for $900,000");
+                    UI.println("enter an amount that is less than that");
                     UI.sleep(2000.0);
                 }
-                else if (amount < minAQuantity)
-                {
+                else if (amount < minAQuantity) {
                     clearField();
-                    UI.println("That is impossible, you paid to little for that card then");
-                    UI.println("Maybe you entered wrong? Try again");
+                    UI.println("I think it's unlikely that your card is that cheap");
+                    UI.println("Enter a number that is more than $1");
                     UI.sleep(2000.0);
                 }
                 else
                 {
-                  break;
+                    break;
                 }
             }
         }while (true);
@@ -126,77 +127,70 @@ public class GUI
     
     private void checkCard(){
         clearField();
-        
-        //Add a Card image for display in the GUI
-        imgFileName = UIFileChooser.open("Choose image file");
-
-        //Check if all the details are correct
+    
+        // Add a Card image for the display in GUI
+        imgFileName = UIFileChooser.open("Choose image file:");
+    
+        // Show all details just entered
         UI.println("- Details entered -");
         UI.println("Name: " + name);
         UI.println("Monetary Value: $" + amount);
-        UI.println(" ");
-    
+        UI.println("");
+        
         do{
-            String yn = UI.askString("Are all the details correct y/n?: ")
-                                     .toLowerCase();
+            String yn = UI.askString("Are all the details correct y/n?: ").toLowerCase();
+            
             // Checks that all details entered are correct (cause users are idiots)
             if (yn.equals("y")) {
-                // Increment the ID count and add to hashmap
+                // Increment the ID count and add to HashMap
                 cards.setCardID();
                 
-                // Add the new Card to hashmap
+                // Add the new Card to HashMap
                 cards.addCard(name, amount, imgFileName);
                 
                 clearField();
-                UI.println("New Card Added :)");
-                UI.sleep(1000);
+                UI.println("New Card added");
+                UI.sleep(1000.0);
                 break;
-            }
-            else if 
-            (yn.equals("n")) 
-            {
-                addNCard();// Starts the proccess again
-            }
-            else if (!yn.matches("[a-zA-Z_]+"))
-            {
-                UI.println("Invalid input");
-                UI.println("please answer either 'y' or 'n'");
+            } else if (yn.equals("n")) {
+                addNCard(); // Starts the proccess again
+            } else if (!yn.matches("[a-zA-Z_]+")) {
+                UI.println("Invalid Input");
+                UI.println("Please enter eitehr 'y' or 'n'");
                 UI.sleep(2000.0);
             }
         }while (true);
     }
     
     /**
-     * Finds Card based on Name and print out details if found
+     * Finds Card based on Name and show details if found
      */
     public void findCard() {
         clearField();
-        String firstName = UI.askString("What is the Name of Card/Pokemon?: ");
+        String name = UI.askString("What is the Name of the Pokemon?: ");
         clearField();
-        if (cards.findCard(firstName.toLowerCase())) {
+        if (cards.findCard(name.toLowerCase())) {
             UI.println("--Found Card--");
             card = cards.getCard();
-            UI.println("First Name: " + card.getName());
-            UI.println("Monetary Value: $" + card.getAmount());
-        }
-        else
-        {
-            UI.println("That Card does not exist in your deck");
+            UI.println("Name: " + card.getName());
+            UI.println("Monetary Value: $ " + card.getAmount());
+        } else {
+            UI.println("Card does not exist in your deck");
             clearField();
             findCard();
         }
     }
     
     /**
-     * When image area clicked clear everything
+     * When image are clicked clear everything
      */
     private void doMouse(String action, double x, double y) {
-        //Makes area that does something when clicked on (Clears panes)
+        // Makes area that does something when clicked on (Clears panes)
         if (action.equals("clicked")) {
-            //check location of the x and y against the location of the object
-            if ((x >= 0) && (x <= 120) &&
-                (y >= 0) && (y <= 130)) { clearField();
+            // Check location of the x and y against the location of the object
+            if ((x >= 0) && (x <= 220) &&
+                (y >= 0) && (y <= 270)) { clearField();
             }
         }
-    }
+    }   
 }

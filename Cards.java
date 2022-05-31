@@ -1,57 +1,49 @@
-import java.util.HashMap;
 import ecs100.*;
+import java.util.HashMap;
 /**
  * Support class for GUI class
  * Contains the hashmap of the users contacts
  *
- * @author (Evie M)
- * @version (23/05/2022)
+ * @author Evie
+ * @version 31/05/2022
  */
 public class Cards
 {
     // Instance variables
-    private HashMap<Integer, Card> deck; // Creating/declaring the hashmap
-    private int currCardID; // Store the current ID of card being added
+    private HashMap<Integer, Card> deck; // Creating the HashMap
+    private int currCardID; // Store the curr ID of the Card being added
     private Card currCard; // Store the instance of the current card
-
-
+    
     /**
-     * Constructor for methods
+     * Constructor for objects of class Cards
      */
     public Cards()
     {
         // Initialise instance variables
-        deck = new HashMap<Integer, Card>(); // Initialise hashmap
+        deck = new HashMap<Integer, Card>(); // Initialise HashMap
         
-        this.currCardID = 0; // Store the current Cards ID
+        this.currCardID = 0; // Store the current Card ID
     }
-    
+
     /**
      * Add Card to the map
-     * @param firstName is fnm
-     * @param phoneNumber is pn
-     * @param image is img
      */
-    public void addCard(String name, int amount, String image) {
+    public void addCard(String name, int amount, String image)
+    {
         deck.put(currCardID, new Card(currCardID, name, amount, image));
     }
     
     /**
-     * Find a Card based on name
+     * Find a Card based on the name
      * Sets the current Card instance if found
-     * return a boolean which is false if not found
-     * @param name is nm
-     * @return false/true
+     * Return a boolean which is false is not found
      */
     public boolean findCard(String name) {
-        // Search for Card
         for
-        (int cardID : deck.keySet())
-        {
-            if (deck.get(cardID).getName().toLowerCase()
-            .equals(name.toLowerCase())) {
+        (int cardID : deck.keySet()) {
+            if (deck.get(cardID).getName().toLowerCase().equals(name.toLowerCase())) {
                 currCard = deck.get(cardID);
-                // Display Card on canvas
+                // Display Card image on field'
                 deck.get(cardID).displayCard();
                 return true;
             }
@@ -60,12 +52,10 @@ public class Cards
     }
     
     /**
-     * print details of all Cards
+     * Print details of all Cards
      */
     public void printAll() {
         // Traverse map
-        UI.clearText();
-        UI.clearGraphics();
         if (currCardID == 0) {
             UI.println("You currently have no Cards");
         }
@@ -75,16 +65,15 @@ public class Cards
             (int cardID : deck.keySet()) {
                 UI.println("    -----");
                 UI.println("ID: " + cardID);
-                UI.println("First Name: " + deck.get(cardID).getName());
-                UI.println("Monetary Value: " + deck.get(cardID)
-                            .getAmount());
+                UI.println("Name: " + deck.get(cardID).getName());
+                UI.println("Monetary Value: $ " + deck.get(cardID).getAmount());
             }
         }
     }
     
     /**
      * Set Card Id
-     * int amount to increment Card id by
+     * int amount to increment Card id by 1
      */
     public void setCardID() {
         this.currCardID += 1;
@@ -92,7 +81,7 @@ public class Cards
     
     /**
      * Getter for the current Card instance
-     * @return Card
+     * @return card
      */
     public Card getCard() {
         return this.currCard;

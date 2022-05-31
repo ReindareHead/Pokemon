@@ -1,11 +1,10 @@
 import ecs100.*;
 /**
- * Support class for Cards class
- * Contains the fields for a card
- * 
+ * Support class for Contacts class
+ * Contains the fields for a contact
  *
- * @author (Evie M)
- * @version (23/05/2022)
+ * @author Evie
+ * @version 31/05/2022
  */
 public class Card
 {
@@ -21,12 +20,9 @@ public class Card
     int locY = 10;
     final double width = 200;
     final double height = 250;
+    
     /**
      * Constructor for objects of class Card
-     * @param key is id
-     * @param fnm is Name
-     * @param pn is Monetary Value
-     * @param img is Card Image
      */
     public Card(int key, String nm, int amt, String img)
     {
@@ -35,28 +31,26 @@ public class Card
         name = nm;
         amount = amt;
         if (img == null) {
-            // Add defult image if no image added by user
+            // Add defult image if no image is added from user
             this.image = defultImage;
         }
-        else
+        else 
         {
             this.image = img;
         }
     }
-    
+
     /**
      * Constructor overloading
      * Set defult image to object
-     * @param key is ID
-     * @param nm is Name
-     * @param amt is Monetary Value
      */
-    public Card(int key, String nm, int amt) {
+    public Card(int key, String nm, int amt)
+    {
         this(key, nm, amt, defultImage);
     }
     
     /**
-     * Display image on GUI
+     * Display Card image on GUI
      */
     public void displayCard() {
         UI.drawImage(this.image, locX, locY, width, height);
@@ -79,10 +73,10 @@ public class Card
     }
     
     /**
-     * Getter for Amount
+     * Getter for Monetary value
      * @return amount
      */
-    public int getAmount() {
+    public long getAmount() {
         return this.amount;
     }
     
