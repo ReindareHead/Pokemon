@@ -1,7 +1,7 @@
 import ecs100.*;
 import java.util.HashMap;
 /**
- * A GUI with buttons to traverse a list of user contacts
+ * A GUI with buttons to traverse a list of user Cards
  *
  * @author Evie
  * @version 31/05/2022
@@ -39,7 +39,9 @@ public class GUI
         UI.initialise();
         UI.addButton("Show all cards", cards::printAll);
         UI.addButton("Add a Card", this::addCard);
+        UI.addButton("Delete a Card", this::deleteCard);
         UI.addButton("Find a Card", this::findCard);
+        UI.addButton("Amount of Cards", this::deckAmount);
         UI.addButton("Clear Field", this::clearField);
         UI.addButton("Quit", UI::quit);
         
@@ -135,6 +137,11 @@ public class GUI
         UI.println("- Details entered -");
         UI.println("Name: " + name);
         UI.println("Monetary Value: $" + amount);
+        if (imgFileName == null) {
+            UI.drawImage("unknown.jpg", card.getX(), card.getY(), card.getWidth(), card.getHeight());
+        }else{
+            UI.drawImage(imgFileName, card.getX(), card.getY(), card.getWidth(), card.getHeight());
+        }
         UI.println("");
         
         do{
@@ -167,18 +174,73 @@ public class GUI
      */
     public void findCard() {
         clearField();
-        String name = UI.askString("What is the Name of the Pokemon?: ");
-        clearField();
-        if (cards.findCard(name.toLowerCase())) {
-            UI.println("--Found Card--");
-            card = cards.getCard();
-            UI.println("Name: " + card.getName());
-            UI.println("Monetary Value: $ " + card.getAmount());
-        } else {
-            UI.println("Card does not exist in your deck");
+        if(cards.getCardID() == 0){
+            UI.println("You currently have no Cards in your deck");
+            UI.sleep(1000.0);
             clearField();
-            findCard();
+        }else{
+            String name = UI.askString("What is the Name of the Pokemon?: ");
+            clearField();
+            if (cards.findCard(name.toLowerCase())) {
+                UI.println("--Found Card--");
+                card = cards.getCard();
+                UI.println("Name: " + card.getName());
+                UI.println("Monetary Value: $ " + card.getAmount());
+            } else {
+                UI.println("Card does not exist in your deck");
+                clearField();
+                findCard();
+            }
         }
+    }
+    
+    private void deleteCard() {
+        clearField();
+        if(cards.getCardID() == 0){
+            UI.println("You currently have no Cards in your deck");
+            UI.sleep(2000.0);
+            clearField();
+        }else{
+            String firstName = UI.askString("What is the Name of Card you wish to discard?: ");
+            clearField();
+            int id = 0;
+            if (cards.findCard(name.toLowerCase())) {
+                card = cards.getCard();
+                id = card.getID();
+                UI.println("ID: " + card.getID());
+                UI.println("First Name: " + card.getName());
+                UI.println("Phone Number: "+ card.getAmount());
+            }else{
+                UI.println("That Person does not exist in your Contacts");
+                UI.sleep(1);
+                clearField();
+                deleteCard();
+            }
+            // get the id from the current contact
+            // contact.getId
+            String yn = UI.askString("Is this the contact you wish to delete? y/n: ").toLowerCase();
+            
+            //Checks that all details entered are correct (cause users are idiots)
+            if (yn.equals("y")) {
+                clearField();
+                cards.deck.remove(id);
+                UI.println("Contact deleted :)");
+            }else if (yn.equals("n")) {
+                deleteCard();
+            }else{
+                UI.println("Answer doesn't make sense, please answer either 'y' or 'n'");
+                clearField();
+                deleteCard();
+            }
+        }
+    }
+    
+    /**
+     * Print out how many cards are in deck
+     */
+    private void deckAmount() {
+        clearField();
+        UI.println("You currently have: " + cards.deck.size() + "in you deck");
     }
     
     /**
@@ -188,8 +250,8 @@ public class GUI
         // Makes area that does something when clicked on (Clears panes)
         if (action.equals("clicked")) {
             // Check location of the x and y against the location of the object
-            if ((x >= 0) && (x <= 220) &&
-                (y >= 0) && (y <= 270)) { clearField();
+            if ((x >= 0) && (x <= card.getWidth()+20) &&
+                (y >= 0) && (y <= card.getHeight()+20)) { clearField();
             }
         }
     }   

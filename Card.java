@@ -19,7 +19,7 @@ public class Card
     int locX = 10;
     int locY = 10;
     final double width = 200;
-    final double height = 250;
+    final double height = 280;
     
     /**
      * Constructor for objects of class Card

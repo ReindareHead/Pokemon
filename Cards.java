@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Cards
 {
     // Instance variables
-    private HashMap<Integer, Card> deck; // Creating the HashMap
+    public HashMap<Integer, Card> deck; // Creating the HashMap
     private int currCardID; // Store the curr ID of the Card being added
     private Card currCard; // Store the instance of the current card
     
