@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Cards
 {
     // Instance variables
-    public HashMap<Integer, Card> deck; // Creating the HashMap
+    private HashMap<Integer, Card> deck; // Creating the HashMap
     private int currCardID; // Store the curr ID of the Card being added
     private Card currCard; // Store the instance of the current card
     
@@ -34,16 +34,27 @@ public class Cards
     }
     
     /**
+     * Delete Card from the map
+     */
+    public void deleteCard(String name, int amount, String image)
+    {
+        deck.remove(currCardID);
+    }
+    
+    /**
      * Find a Card based on the name
      * Sets the current Card instance if found
      * Return a boolean which is false is not found
      */
     public boolean findCard(String name) {
+        // Search for Card
         for
-        (int cardID : deck.keySet()) {
-            if (deck.get(cardID).getName().toLowerCase().equals(name.toLowerCase())) {
+        (int cardID : deck.keySet())
+        {
+            if (deck.get(cardID).getName().toLowerCase()
+            .equals(name.toLowerCase())) {
                 currCard = deck.get(cardID);
-                // Display Card image on field'
+                // Display Card on canvas
                 deck.get(cardID).displayCard();
                 return true;
             }
@@ -52,7 +63,7 @@ public class Cards
     }
     
     /**
-     * Print details of all Cards
+     * print details of all Cards
      */
     public void printAll() {
         // Traverse map
@@ -65,18 +76,33 @@ public class Cards
             (int cardID : deck.keySet()) {
                 UI.println("    -----");
                 UI.println("ID: " + cardID);
-                UI.println("Name: " + deck.get(cardID).getName());
-                UI.println("Monetary Value: $ " + deck.get(cardID).getAmount());
+                UI.println("First Name: " + deck.get(cardID).getName());
+                UI.println("Monetary Value: " + deck.get(cardID).getAmount());
             }
         }
+    }
+    
+    /**
+     * Print out size of HashMap
+     */
+    public void deckAmount() {
+        UI.println("You currently have: " + deck.size() + " cards in your deck");
     }
     
     /**
      * Set Card Id
      * int amount to increment Card id by 1
      */
-    public void setCardID() {
-        this.currCardID += 1;
+    public void addCardID() {
+        this.currCardID = this.currCardID + 1;
+    }
+    
+    /**
+     * Set Card Id
+     * int amount to increment Card id by -1
+     */
+    public void minusCardID() {
+        this.currCardID = this.currCardID - 1;
     }
     
     /**
