@@ -36,9 +36,9 @@ public class Cards
     /**
      * Delete Card from the map
      */
-    public void deleteCard(String name, int amount, String image)
+    public void deleteCard(int id, String name, int amount, String image)
     {
-        deck.remove(currCardID);
+        deck.remove(id);
     }
     
     /**
@@ -67,6 +67,8 @@ public class Cards
      */
     public void printAll() {
         // Traverse map
+        UI.clearText();
+        UI.clearGraphics();
         if (currCardID == 0) {
             UI.println("You currently have no Cards");
         }
@@ -77,7 +79,8 @@ public class Cards
                 UI.println("    -----");
                 UI.println("ID: " + cardID);
                 UI.println("First Name: " + deck.get(cardID).getName());
-                UI.println("Monetary Value: " + deck.get(cardID).getAmount());
+                UI.println("Monetary Value: " + deck.get(cardID)
+                            .getAmount());
             }
         }
     }

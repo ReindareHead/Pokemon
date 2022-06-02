@@ -37,7 +37,7 @@ public class GUI
         
         // Buttons for code
         UI.initialise();
-        UI.addButton("Show all Cards", this::printAll);
+        UI.addButton("Show all Cards", cards::printAll);
         UI.addButton("Add a Card", this::addCard);
         UI.addButton("Delete a Card", this::deleteCard);
         UI.addButton("Find a Card", this::findCard);
@@ -54,13 +54,8 @@ public class GUI
      * Puts both clear method into one to make it easier to call
      */
     public void clearField() {
-        UI.clearText();
         UI.clearGraphics();
-    }
-    
-    private void printAll() {
-        clearField();
-        cards.printAll();
+        UI.clearText();
     }
     
     /**
@@ -171,8 +166,6 @@ public class GUI
             
             clearField();
             UI.println("New Card added");
-            UI.sleep(2000.0);
-            clearField();
         } else if (yn.equals("n")) {
             addNCard(); // Starts the whole proccess again
         }else if (!yn.matches("[0-9]+")) {
@@ -199,8 +192,8 @@ public class GUI
      * Finds Card based on Name and show details if found
      */
     public void findCard() {
-        clearField();
         do {
+            clearField();
             if (cards.getCardID() == 0) {
                 UI.println("You currently have no Cards in your deck");
                 break;
@@ -213,10 +206,13 @@ public class GUI
                     UI.println("Name: " + card.getName());
                     UI.println("Monetary Value: $ " + card.getAmount());
                     break;
-                } else {
-                    UI.println("Card does not exist in your deck");
+                } else if (!name.matches("[a-zA-Z_]+")) {
+                    UI.sleep(500.0);
+                    UI.println("Invalid Input");
+                    UI.println("Please only enter letters");
                     UI.sleep(2000.0);
-                    clearField();
+                }else{
+                    UI.println("Card does not exist in your deck");
                     break;
                 }
             }
@@ -224,8 +220,8 @@ public class GUI
     }
     
     private void deleteCard() {
-        clearField();
         do{
+            clearField();
             if (cards.getCardID() == 0){
                 UI.println("You currently have no Cards in your deck");
                 break;
@@ -262,23 +258,34 @@ public class GUI
         do{
             String yn = UI.askString("Is this the contact you wish to delete? y/n: ").toLowerCase();
             //Checks that all details entered are correct (cause users are idiots)
-            if (yn.equals("y")) {
+           if (yn.equals("y")) {
                 // Delete card from HashMap
-                cards.deleteCard(name, amount, imgFileName);
+                cards.deleteCard(card.getID(), name, amount, imgFileName);
                 // Take 1 off the current Card ID
                 cards.minusCardID();
                 
                 clearField();
                 UI.println("Contact deleted :)");
-                UI.sleep(2000.0);
-                clearField();
                 break;
             }else if (yn.equals("n")) {
                 deleteCard(); // Start proccess again
-            }else if (!name.matches("[a-zA-Z_]+")){
+            }else if (!yn.matches("[0-9]+")) {
+                UI.sleep(500.0);
+                clearField();
+                UI.println("Invalid input");
                 UI.println("Answer doesn't make sense, please answer either 'y' or 'n'");
                 UI.sleep(2000.0);
                 clearField();
+                deleteCard();
+            }
+            else{
+                UI.sleep(500.0);
+                clearField();
+                UI.println("Invalid input");
+                UI.println("Answer doesn't make sense, please answer either 'y' or 'n'");
+                UI.sleep(2000.0);
+                clearField();
+                deleteCard();
             }
         }while (true);
     }
