@@ -4,7 +4,7 @@ import ecs100.*;
  * Contains the fields for a contact
  *
  * @author Evie
- * @version 31/05/2022
+ * @version 03/06/2022
  */
 public class Card
 {

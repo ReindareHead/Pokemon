@@ -27,6 +27,7 @@ public class Cards
 
     /**
      * Add Card to the map
+     * Adds a new card with an Id, name, amount, and image
      */
     public void addCard(String name, int amount, String image)
     {
@@ -35,9 +36,12 @@ public class Cards
     
     /**
      * Delete Card from the map
+     * Delete card based of the id number
      */
     public void deleteCard(int id, String name, int amount, String image)
     {
+        // Removes cards based of ID found from search
+        // If deleted with currCardID it will delete last card added
         deck.remove(id);
     }
     
@@ -76,9 +80,10 @@ public class Cards
         {
             for
             (int cardID : deck.keySet()) {
+                // Prints out each card in this format
                 UI.println("    -----");
                 UI.println("ID: " + cardID);
-                UI.println("First Name: " + deck.get(cardID).getName());
+                UI.println("Pokémon Name: " + deck.get(cardID).getName());
                 UI.println("Monetary Value: " + deck.get(cardID)
                             .getAmount());
             }
@@ -87,24 +92,30 @@ public class Cards
     
     /**
      * Print out size of HashMap
+     * Checks how may things are in HashMap then tells user
      */
     public void deckAmount() {
-        UI.println("You currently have: " + deck.size() + " cards in your deck");
+        // Puts number into sentance
+        UI.println("You currently have " + deck.size() + " cards in your deck");
     }
     
     /**
      * Set Card Id
      * int amount to increment Card id by 1
+     * This is for when a card is added
      */
     public void addCardID() {
+        //Card ID plus one
         this.currCardID = this.currCardID + 1;
     }
     
     /**
      * Set Card Id
      * int amount to increment Card id by -1
+     * This is for when a card is deleted
      */
     public void minusCardID() {
+        // Card is minus one
         this.currCardID = this.currCardID - 1;
     }
     
